@@ -10,9 +10,18 @@ local function getRemoteHash()
     return body["commit"]["sha"]
 end
 
+local function mapContentsToTable(contents)
+    local result = {}
+    for _,v in contents do
+        result[v["path"]] = v
+    end
+    return result
+end
+
 local function getRemoteContents()
     local response = http.get(baseUrl .. "/contents?ref=" .. branch)
-    return textutils.unserialiseJSON(response.readAll())
+    local body = textutils.unserialiseJSON(response.readAll())
+    return mapContentsToTable(body)
 end
 
 local function getLocalContents()
