@@ -1,6 +1,6 @@
 local baseUrl = "https://api.github.com/repos/elizabethlfransen/computers-take-over-the-world"
 local branch = "main"
-local installDir = shell.dir() .. "/" .. "computers-take-over-the-world"
+local installDir = arg[1] or shell.dir() .. "/" .. "computers-take-over-the-world"
 local branchFile = "branch.json"
 local createStartup = true
 
@@ -80,7 +80,7 @@ local function createStartupFile()
     -- TODO append to the startup file in case they have something
     local file = fs.open("startup", "w")
     local startupPath = installDir .. "/startup.lua"
-    local execLine = "os.run({},\"" .. startupPath .. "\")"
+    local execLine = "os.run({},\"" .. startupPath .. "\", \"" .. installDir .. "\")"
     file.write(execLine)
     file.close()
 end
