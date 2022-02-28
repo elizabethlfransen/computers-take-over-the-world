@@ -1,9 +1,8 @@
 local baseUrl = "https://api.github.com/repos/elizabethlfransen/computers-take-over-the-world"
 local branch = "main"
-local installDir = arg[1] or shell.dir() .. "/" .. "computers-take-over-the-world"
+local installDir = (arg[1] == "--install-dir" and arg[2]) or shell.dir() .. "/" .. "computers-take-over-the-world"
 local branchFile = "branch.json"
 local createStartup = true
-
 local function getRemoteHash()
     local response = http.get(baseUrl .. "/branches/" .. branch)
     local body = textutils.unserialiseJSON(response.readAll())
