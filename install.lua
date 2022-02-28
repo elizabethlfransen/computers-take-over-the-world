@@ -12,7 +12,7 @@ end
 
 local function mapContentsToTable(contents)
     local result = {}
-    for _,v in contents do
+    for _,v in ipairs(contents) do
         result[v["path"]] = v
     end
     return result
