@@ -58,6 +58,9 @@ local function removeFile(file)
 end
 
 local function removeOldFiles(localContents, remoteContents)
+    if localContents == nil then
+        return
+    end
     for k,v in pairs(localContents) do
         if remoteContents[k] == nil then
             removeFile(v)
