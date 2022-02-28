@@ -17,7 +17,7 @@ end
 
 local function getLocalContents()
     local path = installDir .. "/" .. branchFile
-    if ~fs.exists(path) then
+    if not fs.exists(path) then
         return nil
     end
     local file = fs.open(path, "r")
