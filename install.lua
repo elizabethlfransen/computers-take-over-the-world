@@ -12,7 +12,7 @@ end
 
 local function mapContentsToTable(contents)
     local result = {}
-    for _,v in ipairs(contents) do
+    for _, v in ipairs(contents) do
         result[v["path"]] = v
     end
     return result
@@ -43,10 +43,42 @@ local function updateLocalContents(contents)
     file.close()
 end
 
+local function updateFile(file)
+    local path = installDir .. "/" .. file["path"]
+    local response = http.get(file["download_url"])
+    local body = response.readAll()
+    local localFile = fs.open(path, "w")
+    localFile.write(body)
+    localFile.close()
+end
+
+local function removeFile(file)
+    local path = installDir .. "/" .. file["path"]
+    fs.delete(path)
+end
+
+local function removeOldFiles(localContents, remoteContents)
+    for k,v in pairs(localContents) do
+        if remoteContents[k] == nil then
+            removeFile(v)
+        end
+    end
+end
+
+local function updateFiles(localContents, remoteContents)
+    for k, v in pairs(remoteContents) do
+        if localContents == nil or localContents[k] == nil or localContents[k]["sha"] ~= v["sha"] then
+            updateFile(v)
+        end
+    end
+end
+
 local function install()
     print("Getting branch contents...")
     local localContents = getLocalContents()
     local remoteContents = getRemoteContents()
+    updateFiles(localContents, remoteContents)
+    removeOldFiles(localContents, remoteContents)
     updateLocalContents(remoteContents)
 end
 
