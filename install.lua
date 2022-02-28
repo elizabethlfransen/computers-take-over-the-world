@@ -31,7 +31,7 @@ local function getLocalContents()
     local file = fs.open(path, "r")
     local result = file.readAll()
     file.close()
-    return result
+    return textutils.unserialiseJSON(result)
 end
 
 local function updateLocalContents(contents)
