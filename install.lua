@@ -78,7 +78,7 @@ end
 
 local function createStartupFile()
     -- TODO append to the startup file in case they have something
-    local file = fs.open("startup", "w")
+    local file = fs.open("startup.lua", "w")
     local startupPath = installDir .. "/startup.lua"
     local execLine = "os.run({},\"" .. startupPath .. "\", \"" .. installDir .. "\")"
     file.write(execLine)
